@@ -24,7 +24,7 @@ def comment_new(request, pk):
             comment = form.save(commit=False)
             comment.post = Post.objects.get(pk=pk)
             comment.save()
-            return redirect('blog.views.post_detail', pk)
+            return redirect('blog:post_detail', pk)
     else:
         form = CommentForm()
     return render(request, 'blog/post_form.html', {
@@ -41,12 +41,24 @@ def comment_edit(request, post_pk, pk):
             comment = form.save(commit=False)
             comment.post = Post.objects.get(pk=post_pk)
             comment.save()
-            return redirect('blog.views.post_detail', post_pk)
+            return redirect('blog:post_detail', post_pk)
     else:
         form = CommentForm(instance=comment)
     return render(request, 'blog/post_form.html', {
         'form': form,
     })
+
+
+def comment_delete(request, post_pk, pk):
+    comment = Comment.objects.get(pk=pk)
+    if request.method == 'POST':
+        comment.delete()
+        return redirect('blog:post_detail', post_pk)
+    return render(request, 'blog/comment_delete_confirm.html', {
+        'comment': comment,
+    })
+
+
 
 
 def post_new(request):

@@ -1,26 +1,33 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1>hello django</h1>
+{% extends "blog/layout.html" %}
 
-                <table class="table table-hover table-bordered">
-                <tbody>
-                {% for post in post_list %}
-                <tr>
-                    <td>{{ post.title }}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+{% block content %}
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-12">
+              <h1>hello django</h1>
+
+              <table class="table table-hover table-bordered">
+              <tbody>
+              {% for post in post_list %}
+              <tr>
+                  <td>
+                    {% comment %}
+                      <a href="{% url "blog.views.post_detail" post.pk %}">
+                        {{ post.title }}
+                      </a>
+                      <a href="{% url "post_detail" post.pk %}">
+                        {{ post.title }}
+                      </a>
+                    {% endcomment %}
+                    <a href="{% url "blog:post_detail" post.pk %}">
+                      {{ post.title }}
+                    </a>
+                  </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+{% endblock %}

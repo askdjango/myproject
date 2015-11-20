@@ -1,26 +1,38 @@
+{% extends "blog/layout.html" %}
 
-<style>
-img { max-width: 100%; }
-</style>
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    {{ post.title }}
+                </div>
+                <div class="panel-body">
+                      {% if post.photo %}
+                          <img src="{{ post.photo.url }}" />
+                      {% endif %}
 
-<h1>{{ post.title }}</h1>
+                      {{ post.content|linebreaks }}
 
-{% if post.photo %}
-    <img src="{{ post.photo.url }}" />
-{% endif %}
+                      <h3>Comments</h3>
 
-{{ post.content|linebreaks }}
+                      <a href="{% url "blog:comment_new" post.pk %}">댓글 쓰기</a>
 
-<h3>Comments</h3>
+                      <ul>
+                      {% for comment in post.comment_set.all %}
+                          <li>
+                              {{ comment.message }}
+                              <small>by {{ comment.author }}, {{ comment.created_at }}</small>
+                              <a href="{% url "blog:comment_edit" post.pk comment.pk %}">수정</a>
+                              <a href="{% url "blog:comment_delete" post.pk comment.pk %}" class="text-danger">삭제</a>
+                          </li>
+                      {% endfor %}
+                      </ul>
+                </div>
+            </div>
 
-<a href="{% url "blog.views.comment_new" post.pk %}">댓글 쓰기</a>
-
-<ul>
-{% for comment in post.comment_set.all %}
-    <li>
-        {{ comment.message }}
-        <small>by {{ comment.author }}, {{ comment.created_at }}</small>
-        <a href="{% url "blog.views.comment_edit" post.pk comment.pk %}">수정</a>
-    </li>
-{% endfor %}
-</ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

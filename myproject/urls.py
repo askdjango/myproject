@@ -22,12 +22,9 @@ from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'blog.views.index'),  # 글 목록
-    url(r'^(?P<pk>\d+)/$', 'blog.views.post_detail'),  # 글 내용
-    url(r'^(?P<pk>\d+)/comments/new/$', 'blog.views.comment_new'),  # 새 댓글 생성
-    url(r'^(?P<post_pk>\d+)/comments/(?P<pk>\d+)/edit/$', 'blog.views.comment_edit'),  # 새 댓글 수정
-
-    url(r'^new/$', 'blog.views.post_new'),  # 새 포스팅 등록
+    url(r'^accounts/', include('accounts.urls')),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^blog/', include('blog.urls', namespace='blog')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
