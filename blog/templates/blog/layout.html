@@ -16,9 +16,11 @@ img { max-width: 100%; }
   {# django.contrib.auth.models.AnonymousUser #}
   {% if user.is_authenticated %}
     {{ user.username }}
+    {{ user.email }}
     <a href="{% url "logout" %}?next={{ request.get_full_path }}">로그아웃</a>
   {% else %}
     <a href="{% url "login" %}">로그인</a>
+    <a href="{% url "signup" %}">회원가입</a>
   {% endif %}
 
   {% block content %}

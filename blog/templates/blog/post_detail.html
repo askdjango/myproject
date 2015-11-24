@@ -7,6 +7,7 @@
             <div class="panel panel-info">
                 <div class="panel-heading">
                     {{ post.title }}
+                    by {{ post.author.username }}
                 </div>
                 <div class="panel-body">
                       {% if post.photo %}
@@ -14,6 +15,11 @@
                       {% endif %}
 
                       {{ post.content|linebreaks }}
+
+                      <hr/>
+                      <a href="{% url "blog:index" %}" class="btn btn-default">목록</a>
+                      <a href="{% url "blog:post_update" post.pk %}" class="btn btn-info">수정</a>
+                      <a href="{% url "blog:post_delete" post.pk %}" class="btn btn-danger">삭제</a>
 
                       <h3>Comments</h3>
 
