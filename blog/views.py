@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.shortcuts import render, redirect
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
+from .mixins import PostAuthorMixin
 
 
 '''
@@ -103,7 +104,7 @@ def post_update(request, pk):
     })
 '''
 
-class PostUpdateView(LoginRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, PostAuthorMixin, UpdateView):
     model = Post
     form_class = PostForm
 
@@ -130,14 +131,9 @@ def post_delete(request, pk):
     })
 '''
 
-class PostDeleteView(LoginRequiredMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, PostAuthorMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('blog:index')
-
-    def dispatch(self, request, *args, **kwargs):
-        if self.get_object().author != request.user:
-            return redirect('blog:post_detail', self.kwargs['pk'])
-        return super(PostDeleteView, self).dispatch(request, *args, **kwargs)
 
 # post_delete = login_required(PostDeleteView.as_view())
 post_delete = PostDeleteView.as_view()
